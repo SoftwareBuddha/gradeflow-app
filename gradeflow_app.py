@@ -21,15 +21,19 @@ def add_formatted_page(doc, row):
 st.set_page_config(page_title="GradeFlow - Excel to Word", layout="centered")
 
 st.image("gf_logo.png", width=120)
-st.title("📄 GradeFlow: Excel to Formatted Word")
+st.title("📄 GradeFlow: Excel/CSV to Formatted Word")
 
-st.markdown("Upload an Excel spreadsheet and generate a **Word document** where each row is formatted like a form on a separate page.")
+st.markdown("Upload an Excel or CSV spreadsheet and generate a **Word document** where each row is formatted like a form on a separate page.")
 
-uploaded_file = st.file_uploader("📤 Upload Excel File", type=["xlsx"])
+uploaded_file = st.file_uploader("📤 Upload Excel or CSV File", type=["xlsx", "csv"])
 
 if uploaded_file:
     try:
-        df = pd.read_excel(uploaded_file)
+        if uploaded_file.name.endswith(".csv"):
+            df = pd.read_csv(uploaded_file)
+        else:
+            df = pd.read_excel(uploaded_file)
+
         st.success("✅ File uploaded successfully!")
         st.write("Here’s a preview:")
         st.dataframe(df)
